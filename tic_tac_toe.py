@@ -133,12 +133,9 @@ class State:
 		elif (winner == -1):
 			self.player1.feedReward(0);
 			self.player2.feedReward(1);
-		else:
+		else:	
 			self.player1.feedReward(0.1);
 			self.player1.feedReward(0.5);
-		# else:
-		# 	self.player1.feedReward(0);
-		# 	self.player1.feedReward(0);
 
 	def resetBoard(self):
 		self.board = np.zeros((BOARD_ROWS,BOARD_COLUMNS));
@@ -259,9 +256,9 @@ if __name__ == "__main__":
 	st = State(player1,player2);
 	rounds = int(input("Enter the number of rounds of training for the bot: "));
 	print("Training bot for you...");
-	# st.train(rounds);
+	st.train(rounds);
 	print("Training Complete!!!\nYou are on now...");
-	# player1.savePolicy();
+	player1.savePolicy();
 
 
 	#Play with human
