@@ -249,7 +249,7 @@ if __name__ == "__main__":
 	name = input("Enter the name of the bot: ");
 	# exp_rate = float(input("Enter the exploration rate of the bot: "));
 	# dis_fac = float(input("Enter the discount factor for the bot: "));
-	# lr = float(input("Emter the learning rate of the bot: "));
+	# lr = float(input("Enter the learning rate of the bot: "));
 	player1 = bot(name,0.3,0.9,0.2);
 	player2 = bot("Trainer_bot");
 
