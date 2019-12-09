@@ -137,6 +137,7 @@ class State:
 			self.player1.feedReward(0.1);
 			self.player2.feedReward(0.5);
 
+	#Gives reward to the bot for playing with human players
 	def giveRewardHuman(self):
 		winner = self.isGameOver();
 		if (winner == 1):
@@ -189,7 +190,7 @@ class State:
 				print ("{0} rounds trained...".format(i));
 
 
-	#Play with human
+	#Play with human with added learning from the game
 	def play(self):
 		while (not self.isEnd):
 			#Computer plays first
