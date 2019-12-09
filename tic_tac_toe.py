@@ -135,6 +135,15 @@ class State:
 			self.player2.feedReward(1);
 		else:	
 			self.player1.feedReward(0.1);
+			self.player2.feedReward(0.5);
+
+	def giveRewardHuman(self):
+		winner = self.isGameOver();
+		if (winner == 1):
+			self.player1.feedReward(1);
+		elif (winner == -1):
+			self.player1.feedReward(0);
+		else:	
 			self.player1.feedReward(0.5);
 
 	def resetBoard(self):
@@ -193,9 +202,14 @@ class State:
 			if (winner is not None):
 				if (winner == 1):
 					print(self.player1.player_name,"wins!!!");
+					self.giveRewardHuman();
+					self.player1.resetPlayer();
 				else:
 					print("Tie");
+					self.giveRewardHuman();
+					self.player1.resetPlayer();
 				self.resetBoard();
+				self.player1.savePolicy();
 				break;
 			else:
 				positions = self.available_positions();
@@ -207,10 +221,16 @@ class State:
 				if (winner is not None):
 					if (winner == -1):
 						print(self.player2.player_name,"wins!!!");
+						self.giveRewardHuman();
+						self.player1.resetPlayer();
 					else:
 						print("Tie");
+						self.giveRewardHuman();
+						self.player1.resetPlayer();
 					self.resetBoard();
+					self.player1.savePolicy();
 					break;
+			self.isGameOver();
 
 	def showBoard(self):
 	    # player1: X  player2: O
@@ -227,6 +247,7 @@ class State:
 	            out += token + ' | '
 	        print(out)
 	    print('-------------')
+	    print(self.board);
 
 class Human:
 	def __init__(self,name):
@@ -246,26 +267,39 @@ if __name__ == "__main__":
 
 	#Train the bot
 	your_name = input("Enter your name: ");
-	name = input("Enter the name of the bot: ");
-	# exp_rate = float(input("Enter the exploration rate of the bot: "));
-	# dis_fac = float(input("Enter the discount factor for the bot: "));
-	# lr = float(input("Enter the learning rate of the bot: "));
-	player1 = bot(name,0.3,0.9,0.2);
-	player2 = bot("Trainer_bot");
 
-	st = State(player1,player2);
-	rounds = int(input("Enter the number of rounds of training for the bot: "));
-	print("Training bot for you...");
-	st.train(rounds);
-	print("Training Complete!!!\nYou are on now...");
-	player1.savePolicy();
+	check = input("Do you have a bot already trained and wanna continue playing with it?(y/n): ");
+	if(check == 'y'):
+		bot_policy = input("Enter the name of the policy file of the bot you have trained before: ");
+		tictac = bot(str(bot_policy.split("_")[1]));
+		tictac.loadPolicy(bot_policy);
+
+		human = Human(your_name);
+
+		st = State(tictac,human);
+		st.play();
+	else:
+		name = input("Enter the name of the bot: ");
+		# exp_rate = float(input("Enter the exploration rate of the bot: "));
+		# dis_fac = float(input("Enter the discount factor for the bot: "));
+		# lr = float(input("Enter the learning rate of the bot: "));
+		player1 = bot(name,0.3,0.9,0.2);
+		player2 = bot("Trainer_bot");
+
+		st = State(player1,player2);
+		rounds = int(input("Enter the number of rounds of training for the bot: "));
+		print("Training bot for you...");
+		st.train(rounds);
+		print("Training Complete!!!\nYou are on now...");
+		player1.savePolicy();
 
 
-	#Play with human
-	tictac = bot(name);
-	tictac.loadPolicy("policy_"+name);
+		#Play with human
+		tictac = bot(name);
+		tictac.loadPolicy("policy_"+name);
 
-	human = Human(your_name);
+		human = Human(your_name);
 
-	st = State(tictac,human);
-	st.play();
+		st = State(tictac,human);
+		st.play();
+
