@@ -247,7 +247,7 @@ class State:
 	            out += token + ' | '
 	        print(out)
 	    print('-------------')
-	    print(self.board);
+	    #print(self.board);
 
 class Human:
 	def __init__(self,name):
